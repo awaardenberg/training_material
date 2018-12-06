@@ -116,7 +116,8 @@ Once all the pre-requisites are installed, you will be ready to follow the works
 
 Phospho-proteomics is concerned with the identification of the phosphorylated component of the proteome. Phosphorylation is the largest proportion of post-translational modifications (PTMs) and is associated with the increased as well as decreased activity of proteins. This is primarily under the control of protein kinase and protein phosphatases, which add or remove phosphate groups to proteins in an ATP dependent manner.
 
-Image here of kinase/phosphatase relationship.
+![](BioInfoSummer_2018_KinSwingR_files/Thermo_adapted.jpg)<!-- -->
+*Figure - adapted from:* [Thermo](https://www.thermofisher.com/au/en/home/life-science/protein-biology/protein-biology-learning-center/protein-biology-resource-library/pierce-protein-methods/phosphorylation.html)
 
 There are a number of methods to identify phosphorylated proteins. Generally these methods start either begin with labeling/non-labelled samples followed by specific enrichment of the phospho-peptide fraction followed by quantification. For a TMT experiment (these come in a numbers flavors), samples are labelled with a number of mass tags, separated by 1 Dalton, which are then deconvoluted by mass-spectrometry. Today we will be utilizing public data using the TMT-10plex tagging method, which allows mixtures of up to 10 samples with different mass tags.
 
@@ -313,7 +314,7 @@ plot_this(data_in = evidence_tidy$site_probability,
           density = TRUE)
 ```
 
-![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 **Question:** what do you conclude about the probability distribution and the threshold used?
 
@@ -377,7 +378,7 @@ plot_this(data_in = DPA_out$corrected_data,
           pca = TRUE)
 ```
 
-![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 ### Hierarchicical clustering
 
@@ -391,7 +392,7 @@ plot_this(data_in = DPA_out$corrected_data,
           hclust = TRUE)
 ```
 
-![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 Well... discussion?
 
@@ -496,7 +497,7 @@ NEK_pwm <- viewPWM(pwm_in = pwms,
                    view_pwm = TRUE)
 ```
 
-![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
 ## Score PWM-substrate matches
 
@@ -764,10 +765,18 @@ Here we have...
 
 ### devtools
 
+Install from CRAN:
+https://cran.r-project.org/web/packages/devtools/readme/README.html
 
 
+```r
+install.packages("devtools")
+```
 
 ### phosphoProcessR
+
+Instructions as per git landing page:
+https://github.com/awaardenberg/phosphoProcessR
 
 
 ```r
@@ -778,33 +787,42 @@ devtools::install_github("awaardenberg/phosphoProcessR", build_vignettes = TRUE)
 
 ### KinSwingR
 
+Instructions as per BioConductor landing page:
+https://bioconductor.org/packages/release/bioc/html/KinSwingR.html
 
+
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("KinSwingR", version = "3.8")
+
+```
 
 ## Files used in this tutorial
 
 
 ```r
-
-# evidence file
-#This corresponds to the file: #ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2018/09/PXD008079/Phosphopeptides_glycopeptides_evidence_TiO2_TMT_HUMAN.txt 
+# 1. MaxQuant evidence.txt file
+# This corresponds to the file located here:
+# ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2018/09/PXD008079/Phosphopeptides_glycopeptides_evidence_TiO2_TMT_HUMAN.txt 
 # download and read in using read.table
 
-# fasta genome file
+malaria_evidence_example <- read.delim("/path/to/Phosphopeptides_glycopeptides_evidence_TiO2_TMT_HUMAN.txt", header=T, fill=T)
+
+# 2. Fasta genome file
 # download the following and read in using seqinr
 # ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2018/09/PXD008079/Human_reviewed.fasta
 
-
-# example snippet
+# snippet to follow
 library(seqinr)
-fasta.file <- read.fasta(file = database.file,
-                        seqtype = "AA",
-                        as.string = "TRUE")
-
+human_fasta_example <- read.fasta(file = "/path/to/Human_reviewed.fasta"",
+                                  seqtype = "AA",
+                                  as.string = "TRUE")
 ```
 
 
 ```r
-# Evidence annotation file created
+# 3. evidence annotation file created
 malaria_annotation_example <- data.frame(
                                 "samples"=
                                         c("Reporter.intensity.corrected.0",
