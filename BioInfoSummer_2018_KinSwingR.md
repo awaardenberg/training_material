@@ -100,7 +100,10 @@ The example data that we will be using is attached to the `phosphoProcessR` R pa
 
 These example data relate to a data set containing post-translational modifications derived from *Plasmodium falciparum*-infected (past infected) and non-infected human placenta's. See original publication for more details: Kawahara et al. MCP 2018 <https://doi.org/10.1074/mcp.RA118.000907>
 
-Samples consist of: + 5x human non-infected control placenta samples + 5x human malaria infected placenta samples
+Samples consist of:
+
+-   5x human non-infected control placenta samples
+-   5x human malaria infected placenta samples
 
 Data is available on Proteome Exchange (link in Appendix).
 
@@ -481,7 +484,11 @@ Having built a kinase-substrate network (we will look at this later), `swing` in
 
 The final score is a normalised score of predicted kinase activity that is weighted for the number of substrates used in the PWM model and number of peptides in the local kinase-substrate network.
 
-We will set the following parameters: + `p_cut_fc = 0.10` to include substrates with DPA less than this p-value + `return_network = TRUE` to return an interaction network that will visualise later + `permutations = 1000` to permute the network 1000 times to assess the change of finding a swing score.
+We will set the following parameters:
+
+-   `p_cut_fc = 0.10` to include substrates with DPA less than this p-value
+-   `return_network = TRUE` to return an interaction network that will visualise later
+-   `permutations = 1000` to permute the network 1000 times to assess the change of finding a swing score.
 
 ``` r
 register(SnowParam(workers = 4))
@@ -564,7 +571,11 @@ write.table(total_network, file="\dir\to\save\total_network.txt", sep="\t", row.
 
 **Load network into Cytoscape (All imagees derived using Version 3.7.0)**
 
-Follow: + \[File\] &gt; + \[Import Network from File\] &gt; + \[Select file\]
+Follow:
+
+-   \[File\] &gt;
+-   \[Import Network from File\] &gt;
+-   \[Select file\]
 
 ![](BioInfoSummer_2018_KinSwingR_files/add_new_network.png)
 
@@ -695,9 +706,16 @@ Can now look at the kinase nodes and sequences in edges. - Generate PWM models f
 Summary
 =======
 
-Here we have... + Formatted *evidence.txt* files for analysis with KinSwingR + *Cannot* guarantee quality of data + *Can* infer kinase activity + *Can* reduce the complexity of networks for visualization
+Here we have...
 
-**Thank you :) Questions, comments, suggestions?** + email: <a.waardenberg@gmail.com>
+-   Formatted *evidence.txt* files for analysis with KinSwingR
+-   *Cannot* guarantee quality of data
+-   *Can* infer kinase activity
+-   *Can* reduce the complexity of networks for visualization
+
+**Thank you :) Questions, comments, suggestions?**
+
+-   email: <a.waardenberg@gmail.com>
 
 Appendix
 ========
