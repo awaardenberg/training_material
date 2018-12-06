@@ -1,7 +1,7 @@
 ---
 title: "BioInfoSummer 2018: KinSwingR Workshop"
 author: "Ashley J. Waardenberg"
-date: 'Last modified: 2018-12-04. Compiled: 2018-12-06'
+date: 'Last modified: 2018-12-06. Compiled: 2018-12-06'
 output:
   html_document:
     keep_md: true
@@ -79,21 +79,22 @@ vignette: >
 
 # Introduction/overview of workshop
 
-This workshop will demonstrate inference of kinase activity from phospho-proteomics data using KinSwingR (and phosphoProcessR for processing of phospho-data).
+This workshop will demonstrate inference of kinase activity from phospho-proteomics data using ```KinSwingR``` (and ```phosphoProcessR``` for processing of phosphoproteomics data).
 
 **Overview of workshop**
+
 + Run through pre-requisites
 + Introduction to example data
 + Processing of phosphoproteomics data (very quick QC)
-+ Inferring kinase activity with KinSwingR
-+ Visualising networks
-+ optional homework? if we don't finish :/
++ Inferring kinase activity
++ Visualizing networks
++ If we don't finished? Optional homework :/
 
-# Prerequisities
+# Pre-requisites
 
 The following will need to be installed prior to starting:
 
-+ **```R/RStudio```** Preferrable to have RStudio installed in addition to R. 
++ **```R/RStudio```** Preferable to have R Studio installed in addition to R. 
 See here: https://www.rstudio.com/products/rstudio/download/
 
 + **```devtools```** required for installation of packages from github. 
@@ -104,10 +105,10 @@ Go here and follow installation instructions: https://bioconductor.org/packages/
 
 + **```phosphoProcessR```** package for analysis of phospho-proteomics data (and example data). See here: https://github.com/awaardenberg/phosphoProcessR
 
-+ **```cytoscape```** for visualisation of networks. 
++ **```cytoscape```** for visualization of networks. 
 Go here and download: https://cytoscape.org/
 
-Prior to this workshop you should have everything installed, except ```phosphoProcessR```. Install now following the instructions above.
+Prior to this workshop you should have everything installed, except ```phosphoProcessR```. Install now following the instructions above (or see Appendix for more details).
 
 Once all the pre-requisites are installed, you will be ready to follow the workshop.
 
@@ -117,9 +118,9 @@ Phospho-proteomics is concerned with the identification of the phosphorylated co
 
 Image here of kinase/phosphatase relationship.
 
-There are a number of methods to identify phosphorylated proteins. Generally these methods start either begin with labelling/non-labelled samples followed by specific enrichment of the phospho-preptide fraction followed by quantification. For a TMT experiment (these come in a numbers flavours), samples are labelled with a number of mass tags, seperated by 1 Dalton, which are then deconvoluted by mass-spectrometry. Today we will be utilising public data using the TMT-10plex tagging method, which allows mixtures of upto 10 samples with different mass tags.
+There are a number of methods to identify phosphorylated proteins. Generally these methods start either begin with labeling/non-labelled samples followed by specific enrichment of the phospho-peptide fraction followed by quantification. For a TMT experiment (these come in a numbers flavors), samples are labelled with a number of mass tags, separated by 1 Dalton, which are then deconvoluted by mass-spectrometry. Today we will be utilizing public data using the TMT-10plex tagging method, which allows mixtures of up to 10 samples with different mass tags.
 
-A typical phosphoproteomics workflow (pilfered from Kozlov et al. 2015)
+A typical phosphoproteomics workflow (pilfered from @Kozlov2015)
 
 ![](./BioInfoSummer_2018_KinSwingR_files/Kozlov2016_Figure1.png)<!-- -->
 
@@ -129,30 +130,30 @@ A typical phosphoproteomics workflow (pilfered from Kozlov et al. 2015)
 
 The example data that we will be using is attached to the ```phosphoProcessR``` R package that you will have now downloaded and installed from github.
 
-These example data relate to a dataset containing post-translational modifications derived from *Plasmodium falciparum*-infected (past infected) and non-infected human placenta's. See original publication for more details: Kawahara et al. MCP 2018 https://doi.org/10.1074/mcp.RA118.000907
+These example data relate to a data set containing post-translational modifications derived from *Plasmodium falciparum*-infected (past infected) and non-infected human placenta's. See original publication for more details: Kawahara et al. MCP 2018 https://doi.org/10.1074/mcp.RA118.000907
 
 Samples consist of:
 + 5x human non-infected control placenta samples
 + 5x human malaria infected placenta samples 
 
-Data is available on Proteome Exchange (link below).
+Data is available on Proteome Exchange (link in Appendix).
 
 ## Data summary
 
-The data that we will use for this workshop is already embedded in the ```phosphoProcessR``` R package. These files are summarised below. *You can try downloading these files from the repository yourself and importing to phosphoProcessR - see Appendix for more details*
+The data that we will use for this workshop is already embedded in the ```phosphoProcessR``` R package. These files are summarized below. *You can try downloading these files from the repository yourself and importing to phosphoProcessR - see Appendix for more details*
 
 ### Evidence.txt file
 
 + **```malaria_evidence_example```** *MaxQuant - evidence.txt file format* This file contains data derived from conversion of  mass-spectrometry signal to phospho-peptides [14,687 rows and 103 columns]. Data has  been processed with MaxQuant, to convert  mass-spectrometry signals into quantitative signals and identify phosphosites. Peptide sequences have been mapped to the human proteome. 
 
-*MaxQuant is a popular software used in proteomics. MaxQuant has it's own summer schools etc. (thus, well and truly beyond the scolpe of this workshop!). For more information: https://maxquant.org/*
+*MaxQuant is a popular software used in proteomics. MaxQuant has it's own summer schools etc. (thus, well and truly beyond the scolpe of this workshop!). For more information: https://maxquant.org/ *
 
-**```malaria_evidence_example```** corresponds to the following archived file: ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2018/09/PXD008079/Phosphopeptides_glycopeptides_evidence_TiO2_TMT_HUMAN.txt 
+**```malaria_evidence_example```** details of where to find this file are in the Appendix to this workshop.
 
-Althought there are 103 columns, the important columns that we will be interested in today are summarised below:
+Although there are 103 columns, the important columns that we will be interested in today are summarized below:
 
 
-Table: test_table
+Table: malaria_evidence_example
 
 Phospho..STY..Probabilities                      Leading.proteins    Reporter.intensity.corrected.0
 -----------------------------------------------  -----------------  -------------------------------
@@ -165,7 +166,7 @@ AAAAGLGHPAS(1)PGGS(0.997)EDGPPGS(0.003)EEEDAAR   Q99856                         
 These columns correspond to:
 
 
-Table: test_table
+Table: 
 
 Column                           Meaning                                                   
 -------------------------------  ----------------------------------------------------------
@@ -176,20 +177,18 @@ Reporter.intensity.corrected.1   Intensity for second label, so forth
 
 ### Reference Proteome
 
-+ **```human_fasta_example```** *Reference Proteome - Fasta format* This reference proteome is in FASTA format and contains all amino acid sequences that make up the protein complement of the human genome. This fasta file was used for the peptide mapping by MaxQuant (this is important for phosphoProcessR). 
++ **```human_fasta_example```** *Reference Proteome - Fasta format* This reference proteome is in FASTA format and contains all amino acid sequences that make up the protein complement of the human genome. This fasta file was used for the peptide mapping by MaxQuant (this is important for ```phosphoProcessR```). 
 
-The fasta file can be downloaded from the following link and loaded into R using ```seqinr``` as per the supplementary [do NOT do this now]: ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2018/09/PXD008079/Human_reviewed.fasta
-
-
+The fasta file can be downloaded from the pride database and loaded into R using ```seqinr``` as per the Appendix.
 
 ### Annotation table describing experimental design
 
-+ **```malaria_annotation_example```** *Annotation file* that contains details of the experimental design. It contains 3 columns that must be named "samples", "labels" and "group" for compatability with the current version of phosphoProcessR. This table is used to 1) extract the relevant columns from the evidence file and 2) determine groups for statistical analysis.
++ **```malaria_annotation_example```** *Annotation file* that contains details of the experimental design. It contains 3 columns that must be named "samples", "labels" and "group" for compatibility with the current version of ```phosphoProcessR```. This table is used to 1) extract the relevant columns from the evidence file and 2) determine groups for statistical analysis.
 
 Summary of table:
 
 
-Table: test_table
+Table: malaria_annotation_example
 
 samples                          labels      group   
 -------------------------------  ----------  --------
@@ -208,7 +207,7 @@ Now we will begin the *hands-on* part of the workshop!
 
 ```phosphoProcessR``` provides core utilities for performing Differential Phosphorylation Analysis (DPA). It has functionality for remapping and annotating *evidence.txt* files produced by MaxQuant, ready for further statistical analysis.
 
-Key functionality of ```phosphoProcessR``` includes normalisation, missing value imputation, batch correction (utilising Surrogate Variable Analysis: ```sva```) and statistical analysis of differential phosphorylation using ```limma```. ```phosphoProcessR``` **in development**, but effectively implements an updated workflow that was originally used in @Koslov2015 and described in @Waardenberg2017 + @Kasper2018.
+Key functionality of ```phosphoProcessR``` includes normalization, missing value imputation, batch correction (utilizing Surrogate Variable Analysis: ```sva```) and statistical analysis of differential phosphorylation using ```limma```. ```phosphoProcessR``` **in development**, but effectively implements an updated workflow that was originally used in @Kozlov2015 and described in @Waardenberg2017 as well as @Kasper2018.
 
 phosphoProcessR contains 3 core functions:
 
@@ -222,7 +221,7 @@ Detailed information for each of these functions and default parameters can be a
 
 ## phosphoProcessR-ing Placental Malaria
 
-We will now use phosphoProcessR to perform DPA on the phospho-peptides identified by XX et. al and use this as input to ```KinSwingR``` for **kinase activity prediction**.
+We will now use phosphoProcessR to perform DPA on the phospho-peptides identified by Kawahara et al. MCP 2018 and use this as input to ```KinSwingR``` for **kinase activity prediction**.
 
 Begin by loading ```phosphoProcessR``` in ```R``` and the data libraries included in the package (*as outlined above*).
 
@@ -238,7 +237,7 @@ data(malaria_evidence_example)
 data(malaria_annotation_example)
 ```
 
-Next we will call ```tidyEvidence``` which will reformat and remap the evidence file for use with ```phosphoDE```. The following paramaters are set:
+Next we will call ```tidyEvidence``` which will reformat and remap the evidence file for use with ```phosphoDE```. The following parameters are set:
 
 + ```window_size = 15```; this is the width of the centered sequence to obtain
 + ```min_prob = 0.7```; minimum probability observed to keep a phosphosite
@@ -246,9 +245,11 @@ Next we will call ```tidyEvidence``` which will reformat and remap the evidence 
 
 
 ```r
-# tidyEvidence supports multi-core processing using the BiocParallel package
+# tidyEvidence supports multi-core processing using the BiocParallel 
+
 # load BiocParallel library
 library(BiocParallel)
+
 # set/register the number of cores to use
 # here 4 cores are used for processing
 register(SnowParam(workers = 4))
@@ -301,31 +302,30 @@ head(evidence_tidy$intensity, 5)
 
 ```tidyEvidence``` was called with ```min_prob = 0.7```, being the minimum probability observed to keep a phosphosite. ***What this a good threshold?*** Let's have a look.
 
-The ouputs of ```tidyEvidence``` include a vector of of all phosphosite probabilities observed. We can now used this to inform on the ```min_prob``` threshold utilised in ```tidyEvidence```. 
+The outputs of ```tidyEvidence``` include a vector of of all phosphosite probabilities observed. We can now used this to inform on the ```min_prob``` threshold utilized in ```tidyEvidence```. 
 
-To visualise we use one of the ```plot_this``` wrappers, as follows:
+To visualize we use one of the ```plot_this``` wrappers, as follows:
 
 
 ```r
 plot_this(data_in = evidence_tidy$site_probability,
-          title = "Malaria example",
+          title = "Site Probabilities",
           density = TRUE)
 ```
 
 ![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
-**Question: what do you conclude about the probability distribution and the threshold used?**
+**Question:** what do you conclude about the probability distribution and the threshold used?
 
 ## Differential Phosphorylation Analysis (DPA)
 
 Having obtained a table of the phosphorylation sites and their values (in a tidy data.frame using ) using ```tidyEvidence``` we can test for differential phosphorylation using ```phosphoDE```. ```phosphoDE``` uses ```limma``` for final statistical analysis in combination with a workflow previously described in @Waardenberg2017.
 
-We will choose to correct the data, but not perform multiple-hypothesis correction (but we can discuss). You can play with this... Original paper described... We are interested in this dataset as an example.
+We will correct data, but not perform multiple-hypothesis correction. You can play with this... The original paper described a lack of large differences between the two groups as potential individual variability. We are interested in this data set as an example for the moment...
 
 
 ```r
-
-# utilising the intensity values derived from tidyEvidence, we now perform DPA.
+# utilising intensity values derived from tidyEvidence, we now perform DPA.
 # DPA is currently limited to pairs of groups defined in an annotation_file.
 
 DPA_out <- phosphoDE(phospho_input = evidence_tidy$intensity,
@@ -335,42 +335,32 @@ DPA_out <- phosphoDE(phospho_input = evidence_tidy$intensity,
 ## Number of significant surrogate variables is:  2 
 ## Iteration (out of 5 ):1  2  3  4  5
 
-head(DPA_out$results)
+head(DPA_out$results, 4)
 ##                                                             logFC
 ## OTUD4|Q01804|1024|QRPKEESSEDENEVS                      -0.7476597
 ## TNKS1BP1|Q9C0C2|221|STLFRGWSQEGPVKS                     0.7876153
 ## NUFIP2|Q7Z417|629|ESQNPLASPTNTLLG                       0.8196903
 ## SRRM2|Q9UQ35|1972;1974|VTRRRSRSRTSPITR;RRRSRSRTSPITRRR -0.7140013
-## BAG3|O95817|279|GASSREGSPARSSTP                         0.5335371
-## BAG3|O95817|275;279|SSVQGASSREGSPAR;GASSREGSPARSSTP     0.5335371
 ##                                                          AveExpr         t
 ## OTUD4|Q01804|1024|QRPKEESSEDENEVS                      10.015042 -6.041931
 ## TNKS1BP1|Q9C0C2|221|STLFRGWSQEGPVKS                    11.559190  4.803736
 ## NUFIP2|Q7Z417|629|ESQNPLASPTNTLLG                       8.269123  4.722778
 ## SRRM2|Q9UQ35|1972;1974|VTRRRSRSRTSPITR;RRRSRSRTSPITRRR  7.834709 -4.457842
-## BAG3|O95817|279|GASSREGSPARSSTP                        10.121552  4.357752
-## BAG3|O95817|275;279|SSVQGASSREGSPAR;GASSREGSPARSSTP    10.121552  4.357752
 ##                                                             P.Value
 ## OTUD4|Q01804|1024|QRPKEESSEDENEVS                      6.517681e-05
 ## TNKS1BP1|Q9C0C2|221|STLFRGWSQEGPVKS                    4.639233e-04
 ## NUFIP2|Q7Z417|629|ESQNPLASPTNTLLG                      5.313877e-04
 ## SRRM2|Q9UQ35|1972;1974|VTRRRSRSRTSPITR;RRRSRSRTSPITRRR 8.337419e-04
-## BAG3|O95817|279|GASSREGSPARSSTP                        9.907490e-04
-## BAG3|O95817|275;279|SSVQGASSREGSPAR;GASSREGSPARSSTP    9.907490e-04
 ##                                                        adj.P.Val
 ## OTUD4|Q01804|1024|QRPKEESSEDENEVS                      0.1283983
 ## TNKS1BP1|Q9C0C2|221|STLFRGWSQEGPVKS                    0.2516499
 ## NUFIP2|Q7Z417|629|ESQNPLASPTNTLLG                      0.2516499
 ## SRRM2|Q9UQ35|1972;1974|VTRRRSRSRTSPITR;RRRSRSRTSPITRRR 0.2516499
-## BAG3|O95817|279|GASSREGSPARSSTP                        0.2516499
-## BAG3|O95817|275;279|SSVQGASSREGSPAR;GASSREGSPARSSTP    0.2516499
 ##                                                                 B
 ## OTUD4|Q01804|1024|QRPKEESSEDENEVS                       1.3841464
 ## TNKS1BP1|Q9C0C2|221|STLFRGWSQEGPVKS                    -0.0479490
 ## NUFIP2|Q7Z417|629|ESQNPLASPTNTLLG                      -0.1514811
 ## SRRM2|Q9UQ35|1972;1974|VTRRRSRSRTSPITR;RRRSRSRTSPITRRR -0.4985424
-## BAG3|O95817|279|GASSREGSPARSSTP                        -0.6328692
-## BAG3|O95817|275;279|SSVQGASSREGSPAR;GASSREGSPARSSTP    -0.6328692
 ```
 
 ## Some quick QC - what is going on?
@@ -379,7 +369,6 @@ head(DPA_out$results)
 
 
 ```r
-
 plot_this(data_in = DPA_out$corrected_data,
           annotation_file = malaria_annotation_example,
           legend = TRUE,
@@ -404,19 +393,35 @@ plot_this(data_in = DPA_out$corrected_data,
 
 ![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
-Well...
+Well... discussion?
 
 # KinSwingR
 
-Having obtained differential phosphorylation data, we will now move onto analysing the data with KinSwingR.
+## Introduction (extract from KinSwingR vignette)
 
-Intro to KinSwingR. Overview of functions and what they do (look at vignette).
+```KinSwingR``` aims to predict kinase activity from phoshoproteomics data. It implements the alogorithm described in: @Kasper2018 and @Waardenberg2018. ```KinSwingR``` predicts kinase activity by integrating kinase-substrate predictions and the fold change and signficance of change for peptide sequences obtained from phospho-proteomics studies. The score is based on the network connectivity of kinase-substrate networks and is weighted for the number of substrates as well as the size of the local network. P-values are provided to assess the significance of the KinSwing scores, which are determined through random permutations of the kinase-substrate network.
 
-## Extracting peptides
+```KinSwingR``` implements 3 core functions:
+
++ **```buildPWM```** builds position weight matrices (PWMs) from known kinase-substrate sequences
++ **```scoreSequences```** score PWMs build using ```buildPWM``` against input phosphoproteome data
++ **```swing```** integrates PWM scores, direction of phosphopeptide change and significance of phosphopeptide change into a *swing* score.
+
+The KinSwing score is a metric of kinase activity, ranging from positive to negative, and p-values are provided to determine significance.
+
+Additional functions include
+
++ **```cleanAnnotation```** function to tidy annotations and extract peptide sequences.
++ **```viewPWM```** function to view PWM models
+
+We will use all of these functions today.
+
+## Extracting peptides with ```cleanAnnotation```
+
+Having obtained differential phosphorylation data, we will now move onto analyzing the data with KinSwingR - beginning with extracting peptide sequences from the annotation column.
 
 
 ```r
-
 # load the KinSwingR R package
 library(KinSwingR)
 
@@ -459,10 +464,11 @@ head(annotated_data, 3)
 
 These are obtained from... How to get and format...
 
+The first step to inferring kinase activity, is to build Position Weight Matrices (PWMs) for kinases. This can be done using ```buildPWM``` for any table containing centered substrate peptide sequences for a list of kinases. The data we will use ```data(phosphositeplus_human)``` has been extracted from the phosphositeplus website and contains annotated and centered substrate sequences for kinases. This can be obtained from: https://www.phosphosite.org/
+
 
 ```r
-
-# look at the data for building the PWM models
+# quick peak at the data for building the PWM models
 head(phosphositeplus_human, 5)
 ##      kinase    substrate        
 ## [1,] "EIF2AK1" "MILLSELSRRRIRSI"
@@ -477,11 +483,11 @@ pwms <- buildPWM(phosphositeplus_human, substrates_n = 10)
 
 ### view a PWM
 
-KinSwingR includes functionality for visualising motifs. About motifs here. Scale etc.
+```KinSwingR``` also includes functionality for visualizing motifs.
 
 Save this to an object. Why?
 
-To view the motif ensure you set ```view_pwm``` to ```TRUE```.
+To view the motif ensure you set ```view_pwm``` to ```TRUE```!
 
 
 ```r
@@ -492,11 +498,10 @@ NEK_pwm <- viewPWM(pwm_in = pwms,
 
 ![](BioInfoSummer_2018_KinSwingR_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
-## Score the PWM - peptide matches
+## Score PWM-substrate matches
 
 
 ```r
-# probably already initialised
 library(BiocParallel)
 # finally set/register the number of cores to use
 register(SnowParam(workers = 4))
@@ -507,11 +512,20 @@ scores <- scoreSequences(input_data = annotated_data,
                          n = 1000)
 ```
 
-All the data is accessbile from Scores. Outline THIS here. But we wont look into this today. Just for future reference.
+All data is accessible from scores. We won't look into this today, but just for future reference:
+
+The outputs of ```scores``` are transparent and accessible. These are however primarily intermediate tables for obtaining swing scores. ```scores``` is a simple list object that contains peptide scores ```(scores$peptide_scores)```, p-values for the peptide scores ```(scores$peptide_p)``` and the background peptides used to score significance ```(scores$background)``` for reproducibility (i.e. the background can saved and reused for reproducibility).
 
 ## Calculate KinSwing scores
 
-Description of what it is doing here
+Having built a kinase-substrate network (we will look at this later), ```swing``` integrates the kinase-substrate predictions, directionality and significance of phosphopeptide fold change to assess local connectivity (or swing) of kinase-substrate networks. 
+
+The final score is a normalised score of predicted kinase activity that is weighted for the number of substrates used in the PWM model and number of peptides in the local kinase-substrate network. 
+
+We will set the following parameters:
++ ```p_cut_fc = 0.10``` to include substrates with DPA less than this p-value
++ ```return_network = TRUE``` to return an interaction network that will visualise later
++ ```permutations = 1000``` to permute the network 1000 times to assess the change of finding a swing score. 
 
 
 ```r
@@ -544,13 +558,11 @@ head(swing_out$scores)
 
 ### Visualise Motifs
 
-View the top 5 motifs that are greater or less. See above example.
+View the top motifs from swing using ```viewPWM```. Refer back to previous example.
 
 # Network Visualisation
 
-Having obtained information of the phosphopeptides, the kinases inferred to be acting on them. Let's go about trying to visualise this information as networks.
-
-What networks - each interaction...
+Having obtained information of the phosphopeptides, the kinases inferred to be acting on them. Let's go about trying to visualize this information as networks.
 
 We will use cytoscape for now - ***R*** later?
 
@@ -558,7 +570,7 @@ We will use cytoscape for now - ***R*** later?
 
 Recall above when calling ```swing``` we set the ```return_network``` parameter to ```TRUE```. This allows for the interaction network between all kinases and substrate sequences to be obtained. This contains all the kinase-substrate interactions used in ```swing``` to assess local kinase networks.
 
-We will first look at the total network and then extract more defined local networks.
+We will first look at the total network and then extract a more defined local networks.
 
 ### Total kinase-substrate interaction network
 
@@ -583,7 +595,7 @@ head(total_network)
 ## 6                    ARGLU1|Q9NWB6|94|RTVSKRSSLDEKQKR::RTVSKRSSLDEKQKR
 ```
 
-What about the "::"? This is used to identify which target peptide was tested and the kinase-substrate matching was less than ```p_cut_pwm``` in ```swing```. This doesnt affect peptides with a single phosphosite, only those with more than one phosphosite.
+What about the "::"? This is used to identify which target peptide was tested and the kinase-substrate matching was less than ```p_cut_pwm``` in ```swing```. This doesn't affect peptides with a single phosphosite, only those with more than one phosphosite.
 
 **What does it look like?**
 
@@ -620,7 +632,7 @@ Conclusions on usefulness? **[YES | NO]**
 
 ### Extracting a more focused network
 
-You should clearly see that simply looking at all the predicted edges is difficult, when one wishes to extract *meaningful* information. We will now reduce the network to those with predicted significant kinase activity and view local co-occuring networks (to see if this is more useful).
+You should clearly see that simply looking at all the predicted edges is difficult, when one wishes to extract *meaningful* information. We will now reduce the network to those with predicted significant kinase activity and view local co-occurring networks (to see if this is more useful).
 
 Begin by selecting only the **kinases** with predicted significant activity (decreased or increased).
 
@@ -717,7 +729,7 @@ We now want to add some information to this network.
 ![](./BioInfoSummer_2018_KinSwingR_files/check_import_annotation.png)<!-- -->
 
 **3. Add these annotations to the node attributes of the network that we imported**
-+ add to colour and size
++ add to color and size
 
 ![](./BioInfoSummer_2018_KinSwingR_files/add_node_attributes.png)<!-- -->
 
@@ -737,12 +749,12 @@ Can now look at the kinase nodes and sequences in edges.
 # Summary
 
 Here we have...
-- Formatted *evidence.txt* files for analysis with KinSwingR
-- *Cannot* guarantee quality of data
-- *Can* infer kinase activity
-- *Can* reduce the complexity of networks for visualisation
++ Formatted *evidence.txt* files for analysis with KinSwingR
++ *Cannot* guarantee quality of data
++ *Can* infer kinase activity
++ *Can* reduce the complexity of networks for visualization
 
-Thank you :) Questions, comments, suggestions? 
+**Thank you :) Questions, comments, suggestions?**
 + email: a.waardenberg@gmail.com
 
 
