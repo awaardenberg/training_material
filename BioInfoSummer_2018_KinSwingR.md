@@ -122,7 +122,7 @@ There are a number of methods to identify phosphorylated proteins. Generally the
 
 A typical phosphoproteomics workflow (pilfered from @Kozlov2015)
 
-![](./BioInfoSummer_2018_KinSwingR_files/Kozlov2016_Figure1.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/Kozlov2016_Figure1.png)<!-- -->
 
 # Example data
 
@@ -217,7 +217,7 @@ phosphoProcessR contains 3 core functions:
 
 Detailed information for each of these functions and default parameters can be accessed using the ```?``` command before the function of interest. E.g. ```?tidyEvidence``` will display the following:
 
-![](./BioInfoSummer_2018_KinSwingR_files/tidyEvidence.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/tidyEvidence.png)<!-- -->
 
 ## phosphoProcessR-ing Placental Malaria
 
@@ -614,19 +614,19 @@ Follow:
 + [Import Network from File] > 
 + [Select file]
 
-![](./BioInfoSummer_2018_KinSwingR_files/add_new_network.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/add_new_network.png)<!-- -->
 
 Ensure *source* and *targets* are correctly selected
 
-![](./BioInfoSummer_2018_KinSwingR_files/check_import.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/check_import.png)<!-- -->
 
 Looking impressive? Useful? Add some graphic details?
 
-![](./BioInfoSummer_2018_KinSwingR_files/add_detail.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/add_detail.png)<!-- -->
 
 Any more useful? NO? It should look something like this:
 
-![](./BioInfoSummer_2018_KinSwingR_files/total_network.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/total_network.png)<!-- -->
 
 Conclusions on usefulness? **[YES | NO]**
 
@@ -714,7 +714,7 @@ Follow previous instructions for importing network - this time - *kinswing_netwo
 
 Now our network should look like this:
 
-![](./BioInfoSummer_2018_KinSwingR_files/kinswing_network.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/kinswing_network.png)<!-- -->
 
 ### add Annotation to nodes
 
@@ -722,26 +722,26 @@ We now want to add some information to this network.
 
 **1. Import the annotation table**
 
-![](./BioInfoSummer_2018_KinSwingR_files/import_annotation.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/import_annotation.png)<!-- -->
 
 **2. Check that the annotations look like the table we created**
 
-![](./BioInfoSummer_2018_KinSwingR_files/check_import_annotation.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/check_import_annotation.png)<!-- -->
 
 **3. Add these annotations to the node attributes of the network that we imported**
 + add to color and size
 
-![](./BioInfoSummer_2018_KinSwingR_files/add_node_attributes.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/add_node_attributes.png)<!-- -->
 
 In more detail:
 
-![](./BioInfoSummer_2018_KinSwingR_files/set_node_size.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/set_node_size.png)<!-- -->
 
-![](./BioInfoSummer_2018_KinSwingR_files/set_node_colour.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/set_node_colour.png)<!-- -->
 
 ### Our annotated kinase-substrate network
 
-![](./BioInfoSummer_2018_KinSwingR_files/kinswing_network_annotated.png)<!-- -->
+![](BioInfoSummer_2018_KinSwingR_files/kinswing_network_annotated.png)<!-- -->
 
 Can now look at the kinase nodes and sequences in edges.
 - Generate PWM models for kinase's of interest and check sequence similarity
