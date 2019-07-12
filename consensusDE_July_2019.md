@@ -1,7 +1,7 @@
 QFAB 2019: consensusDE Workshop
 ================
 Ashley J. Waardenberg
-Last modified: 2019-06-09. Compiled: 2019-07-11
+Last modified: 2019-06-09. Compiled: 2019-07-12
 
 -   [Overview of workshop](#overview-of-workshop)
     -   [Acknowledgements](#acknowledgements)
@@ -57,9 +57,12 @@ A pre-print describing consensusDE and the application of RUV is here: Waardenbe
 -   Introduction
 -   Building a summarized experiment (example)
 -   Differential Expression of RNA-seq data with multiple RNA-seq algorithms
--   QC plots (how to export to use consensusDE plot functions)
+-   QC plots (how to export and to use consensusDE plot functions)
 
-We will not explore RUV - however an example of this application is available in the consensusDE vignette.
+We will not-
+
+-   explore RUV - however an example of this application is available in the consensusDE vignette.
+-   mapping and QC - as these have been covered by QFAB training
 
 ### Acknowledgements
 
@@ -820,13 +823,12 @@ Summary
 Here we have...
 
 -   Formatted *raw.counts.txt* into a RangedSummarizedExperiment for analysis with consensusDE
--   Obtained results using limma/voom, DESeq2 and edgeR
--   *Cannot* guarantee quality of data
--   *Can* reduce the complexity of networks for visualization
+-   Obtained results using 3 different RNA-seq algorithms: limma/voom, DESeq2 and edgeR
 
 We have not...
 
--   used the RUV algorithm implemented in consensusDE
+-   used the RUV algorithm implemented in consensusDE, for removal of unwanted variation
+-   covered QC (covered QFAB training)
 
 **Thank you :) Questions, comments, suggestions?**
 
